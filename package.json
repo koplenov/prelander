@@ -1,0 +1,10 @@
+{
+  "name": "prelander",
+  "version": "1.0.0",
+  "description": "Service for prerender https://page.hyoo.ru pages for SEO",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^4.14.0"
+  }
+}
