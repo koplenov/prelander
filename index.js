@@ -1,4 +1,4 @@
-const api = 'http://127.0.0.1:8007/land='
+const api = 'http://sync.hyoo.ru/land'
 const fastify = require( 'fastify' )( {
 	logger: true
 } )
@@ -8,7 +8,7 @@ fastify.get( '/', async ( request, reply ) => {
 	const { _escaped_fragment_ } = request.query
 	if( _escaped_fragment_ ) {
 		const proxy_request = await fetch(
-			`${ api }${ _escaped_fragment_ }=(title_text;release_ref(release_blob))`,
+			`${ api }${ decodeURIComponent(_escaped_fragment_) }=(title_text;release_ref(release_blob))`,
 			{
 				headers: {
 					"Accept": "text/html",
@@ -20,6 +20,6 @@ fastify.get( '/', async ( request, reply ) => {
 	return null
 } )
 
-fastify.listen( { port: 3000 }, ( err, address ) => {
+fastify.listen( { port: 2999 }, ( err, address ) => {
 	if( err ) throw err
 } )
