@@ -1,25 +1,28 @@
-const api = 'http://sync.hyoo.ru/land'
-const fastify = require( 'fastify' )( {
-	logger: true
-} )
+const api = 'https://sync.hyoo.ru/land'
+const query = '=(title_text;release_ref(release_blob))'
+const port = process.env.PORT || 3000
 
-fastify.get( '/', async ( request, reply ) => {
-	reply.header( "Content-Type", "text/html; charset=utf-8" )
-	const { _escaped_fragment_ } = request.query
-	if( _escaped_fragment_ ) {
-		const proxy_request = await fetch(
-			`${ api }${ decodeURIComponent(_escaped_fragment_) }=(title_text;release_ref(release_blob))`,
-			{
-				headers: {
-					"Accept": "text/html",
-				},
-			}
-		)
-		return await proxy_request.text()
+const http = require( 'http' )
+const url = require( 'url' )
+
+http.createServer( async function( request, responce ) {
+	const { _escaped_fragment_ } = url.parse( request.url, true ).query
+
+	if( !_escaped_fragment_ ) {
+		responce.end()
+		return
 	}
-	return null
-} )
 
-fastify.listen( { port: 2999 }, ( err, address ) => {
-	if( err ) throw err
-} )
+	const proxy_request = await fetch(
+		`${ api }${ decodeURIComponent( _escaped_fragment_ ) }${ query }`,
+		{
+			headers: {
+				"Accept": "text/html",
+			},
+		}
+	)
+	const data = await proxy_request.text()
+	responce.writeHead( 200, { 'Content-Type': 'text/html; charset=utf-8' } )
+	responce.write( data )
+	responce.end()
+} ).listen( port )
