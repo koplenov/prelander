@@ -2,6 +2,7 @@ const api = 'https://sync.hyoo.ru/land'
 const query = '=(title_text;release_ref(release_blob))'
 const port = process.env.PORT || 3000
 
+const { Readable } = require( 'stream' )
 const http = require( 'http' )
 const url = require( 'url' )
 
@@ -21,8 +22,10 @@ http.createServer( async function( request, responce ) {
 			},
 		}
 	)
-	const data = await proxy_request.text()
-	responce.writeHead( 200, { 'Content-Type': 'text/html; charset=utf-8' } )
-	responce.write( data )
-	responce.end()
+	const headers = Object.fromEntries( proxy_request.headers )
+	delete headers[ 'content-encoding' ]
+	responce.writeHead( 200, headers )
+
+	Readable.fromWeb( proxy_request.body )
+		.pipe( responce, { end: true } )
 } ).listen( port )
