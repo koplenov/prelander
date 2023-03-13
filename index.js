@@ -1,5 +1,5 @@
 const api = 'https://sync.hyoo.ru/land'
-const query = '=(title_text;release_ref(release_blob))'
+const query = '=(title_text;release_ref(release_blob);pages_ref=(title_text);book_ref=(title_text))'
 const port = process.env.PORT || 3000
 
 const { Readable } = require( 'stream' )
