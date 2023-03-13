@@ -9,6 +9,8 @@ const url = require( 'url' )
 http.createServer( async function( request, responce ) {
 	const { _escaped_fragment_ } = url.parse( request.url, true ).query
 
+	console.log(request.url, request.headers)
+
 	if( !_escaped_fragment_ ) {
 		responce.end()
 		return
