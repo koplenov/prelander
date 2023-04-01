@@ -17,6 +17,8 @@ http.createServer( async function( request, responce ) {
 		return
 	}
 
+	_escaped_fragment_ = _escaped_fragment_.split("/")[0]
+
 	if( _escaped_fragment_ === "" ) {
 		_escaped_fragment_ = default_page
 	}
