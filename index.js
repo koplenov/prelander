@@ -1,4 +1,5 @@
 const api = 'https://sync.hyoo.ru/land'
+const domain = 'https://page.hyoo.ru'
 const default_page = '=iy8wtn_tky6pc'
 const query = '=(title_text;release_ref(release_blob);pages_ref=(title_text);book_ref=(title_text))'
 const port = process.env.PORT || 3000
@@ -13,11 +14,14 @@ http.createServer( async function( request, responce ) {
 	console.log(request.url, request.headers)
 
 	if( _escaped_fragment_ === undefined ) {
-		responce.end()
-		return
+		return responce.end()
 	}
 
-	_escaped_fragment_ = _escaped_fragment_.split("/")[0]
+	const splited = _escaped_fragment_.split("/")
+	if(splited.length > 1) {
+		responce.writeHead(302, {'Location': `${domain}/?_escaped_fragment_=${splited[0]}`})
+		return responce.end()
+	}
 
 	if( _escaped_fragment_ === "" ) {
 		_escaped_fragment_ = default_page
