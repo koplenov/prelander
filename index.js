@@ -11,15 +11,15 @@ const url = require( 'url' )
 http.createServer( async function( request, responce ) {
 	let { _escaped_fragment_ } = url.parse( request.url, true ).query
 
-	console.log(request.url, request.headers)
+	console.log( request.url, request.headers )
 
 	if( _escaped_fragment_ === undefined ) {
 		return responce.end()
 	}
 
-	const splited = _escaped_fragment_.split("/")
-	if(splited.length > 1) {
-		responce.writeHead(302, {'Location': `${domain}/?_escaped_fragment_=${splited[0]}`})
+	const splited = _escaped_fragment_.split( "/" )
+	if( splited.length > 1 ) {
+		responce.writeHead( 302, { 'Location': `${ domain }/?_escaped_fragment_=${ splited[ 0 ] }` } )
 		return responce.end()
 	}
 
