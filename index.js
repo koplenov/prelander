@@ -37,7 +37,7 @@ http.createServer( async function( request, responce ) {
 	)
 	const headers = Object.fromEntries( proxy_request.headers )
 	delete headers[ 'content-encoding' ]
-	responce.writeHead( 200, headers )
+	responce.writeHead( proxy_request.status, headers )
 
 	Readable.fromWeb( proxy_request.body )
 		.pipe( responce, { end: true } )
